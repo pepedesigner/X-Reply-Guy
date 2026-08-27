@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "X Reply Guy — Growth Replies",
+  "version": "0.1.0",
+  "description": "Generate high-engagement replies on X (Twitter) from any tweet using Reply Guy growth strategies, to help you grow your following fast.",
+  "permissions": ["activeTab", "storage", "scripting", "contextMenus", "clipboardWrite"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "X Reply Guy"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "128": "icon.png"
+  }
+}

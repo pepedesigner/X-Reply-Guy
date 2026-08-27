@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reply Guy Settings</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      padding: 32px 16px;
+      background: #f9fafb;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      color: #111111;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .head {
+      padding: 18px 22px 16px;
+      background: #111111;
+      color: #fff;
+    }
+    .head h2 { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
+    .head p { margin: 4px 0 0; font-size: 12px; color: #9ca3af; }
+    .body { padding: 20px 22px 22px; }
+    label { display: block; margin: 16px 0 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+    label:first-child { margin-top: 0; }
+    input, textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      outline: none;
+      background: #fff;
+      color: #111111;
+      font-family: inherit;
+      transition: border-color 0.12s;
+    }
+    input:focus, textarea:focus { border-color: #111111; }
+    textarea { min-height: 140px; resize: vertical; }
+    .row { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+    button#save {
+      padding: 8px 16px;
+      border: 1px solid #111111;
+      border-radius: 999px;
+      background: #111111;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    button#save:hover { background: #222; }
+    .saved { font-size: 13px; color: #111111; font-weight: 600; }
+    .hint { margin-top: 12px; font-size: 12px; color: #6b7280; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="head">
+      <h2>X Reply Guy Settings</h2>
+      <p>Configure your OpenAI-compatible API to generate replies</p>
+    </div>
+    <div class="body">
+      <label>API Base (OpenAI-compatible)</label>
+      <input id="apiBase" placeholder="https://api.openai.com/v1" />
+
+      <label>API Key</label>
+      <input id="apiKey" type="password" placeholder="sk-..." />
+
+      <label>Model</label>
+      <input id="model" placeholder="gpt-4o-mini" />
+
+      <label>System prompt (Reply Guy strategy)</label>
+      <textarea id="systemPrompt"></textarea>
+
+      <div class="row">
+        <button id="save">Save</button>
+        <span id="status" class="saved"></span>
+      </div>
+      <div class="hint">Works with OpenAI, DeepSeek, Mimo or any OpenAI-compatible endpoint via opencode.ai/zen/go/v1.</div>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+/* content.css — Reply Guy floating panel & button — monochrome, editorial */
+
+#reply-guy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: #111111;
+  color: #fff;
+  border: 1px solid #111111;
+  border-radius: 999px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  height: 28px;
+  box-sizing: border-box;
+  font-family: Inter, -apple-system, sans-serif;
+}
+#reply-guy-btn:hover { background: #222; }
+
+#reply-guy-panel {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 360px;
+  max-height: 72vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06);
+  z-index: 99999;
+  font-family: Inter, -apple-system, sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.rg-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #111111;
+  color: #fff;
+  border-bottom: 1px solid #222;
+}
+.rg-head strong { font-size: 12.5px; font-weight: 700; letter-spacing: -0.02em; }
+.rg-close {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+.rg-close:hover { background: #333; }
+
+.rg-styles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.rg-styles button {
+  padding: 7px 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #111111;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.12s;
+  font-family: inherit;
+}
+.rg-styles button:hover {
+  border-color: #111111;
+  background: #111111;
+  color: #fff;
+}
+
+.rg-out {
+  padding: 12px;
+  overflow: auto;
+  flex: 1;
+  background: #fff;
+}
+.rg-item {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 11px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #111111;
+  font-size: 13px;
+  transition: border-color 0.12s;
+}
+.rg-item:hover { border-color: #111111; }
+.rg-item:last-child { margin-bottom: 0; }
