@@ -1,115 +1,134 @@
+# ⚡ X Reply Guy
+
+<p align="center">
+  <img src="./screenshots/x-reply-guy-hero.png" alt="X Reply Guy Extension Preview" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Manifest-V3-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Manifest V3">
+  <img src="https://img.shields.io/badge/Platform-Chrome%20%2F%20Chromium-000000?style=flat-square&logo=googlechrome&logoColor=white" alt="Chromium">
+  <img src="https://img.shields.io/badge/Streaming-SSE%20Supported-FF6B6B?style=flat-square" alt="SSE Streaming">
+  <img src="https://img.shields.io/badge/Models-OpenAI%20%7C%20DeepSeek%20%7C%20Mimo-6B7280?style=flat-square" alt="Multi-Model">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
+</p>
+
+**Turn any tweet into high-engagement replies.**  
+**X Reply Guy** is a modern Chromium browser extension (MV3) engineered to accelerate your organic growth on X (Twitter). By applying proven high-engagement "Reply Guy" strategies, the extension reads the context of any post on your timeline or detail page, generates targeted replies across 10 distinct tones via streaming LLMs, and lets you insert them into the composer with a single click.
+
+---
+
+## ✨ Features
+
+- 🎯 **Automatic Tweet Context Extraction**: Instantly parses active tweets across your home timeline, single status views, and floating reply dialogs.
+- 🎭 **10 Battle-Tested Reply Styles**:
+  - `⚡ Value` — Adds insightful takeaways, industry frameworks, or actionable advice.
+  - `❓ Question` — Hooks the author and readers with open-ended conversation starters.
+  - `🔥 Hot take` — Sharp, contrarian viewpoints that ignite debate and virality.
+  - `😄 Witty` — Humorous, punchy, and clever banter.
+  - `💡 Relate` — Validates the author's point with personal resonance and empathy.
+  - `📊 Data` — Supplies statistical backing, benchmark numbers, or logical proofs.
+  - `📖 Story` — Short, impactful real-world anecdotes.
+  - `🥊 Pushback` — Respectful yet firm counter-arguments.
+  - `🙏 Devout` — Highly supportive, community-building enthusiasm.
+  - `🤝 Sincere` — Authentic, grounded, and human encouragement.
+- ⚡ **Low-Latency SSE Streaming**: Renders reply candidates in real time with Server-Sent Events (SSE). Full compatibility with both reasoning models (e.g. `hy3`, `flash v4`) and low-latency chat models.
+- ✍️ **1-Click Copy & Direct Fill**:
+  - **Copy**: Places the generated response directly on your clipboard.
+  - **Fill**: Programmatically injects the chosen reply into X's active draft box and enables the native `Reply` button immediately.
+- 🌐 **Universal LLM Endpoint Compatibility**: Seamlessly works with OpenAI, DeepSeek, Mimo, OpenCode Zen, Ollama, Groq, or any standard OpenAI-compatible API base URL.
+- 🖱️ **Context Menu Shortcut**: Select any text on any page → Right click → *Reply to selection with Reply Guy*.
+- 🔒 **Zero Telemetry & Local Security**: Your API keys are stored strictly inside your browser's local `chrome.storage.sync` and are never transmitted to third parties.
+
+---
+
+## 📸 Workflow
 
 ```
-__  __  ____  _____ ____  _  __   __   ____ _   ___   __
-\ \/ / |  _ \| ____|  _ \| | \ \ / /  / ___| | | \ \ / /
- \  /  | |_) |  _| | |_) | |  \ V /  | |  _| | | |\ V /
- /  \  |  _ <| |___|  __/| |___| |   | |_| | |_| | | |
-/_/\_\ |_| \_\_____|_|   |_____|_|    \____|\___/  |_|
-
-        X REPLY GUY  —  Turn any tweet into high-engagement replies.
+Browse X (Twitter)
+      │
+      ▼
+Open Post / Click Reply
+      │
+      ▼
+Automatic Tweet Parsing (content.js / popup.js)
+      │
+      ▼
+Choose Reply Preset (10 Options)
+      │
+      ▼
+Fast SSE Streaming Generation via LLM (background.js)
+      │
+      ▼
+3 Curated Candidate Replies
+      │
+      ├─ [📋 Copy] ──► Clipboard
+      └─ [✍️ Fill] ───► Injects directly into X's active composer + enables Reply
 ```
 
-# ✨ X Reply Guy
+---
 
-**Reply Guy 涨粉神器** — 一个浏览器扩展，根据你在 X (Twitter) 上读到的帖子，用「Reply Guy 策略」一键生成高互动回复，帮你快速涨粉。
+## 🚀 Installation
 
-在别人帖子下留下**有价值、有钩子**的回复来吸引关注。这个插件把整个流程自动化：读推文 → 选风格 → 一键生成 → 填回输入框。
+Works on **Google Chrome**, **Brave**, **Comet**, **Microsoft Edge**, **Arc**, and any Chromium browser:
+
+1. Clone or download this repository:
+   ```sh
+   git clone https://github.com/pepedesigner/X-Reply-Guy.git
+   ```
+2. Navigate to your browser's extensions page (`chrome://extensions` or `brave://extensions`).
+3. Toggle on **Developer mode** in the top right corner.
+4. Click **Load unpacked** (加载已解压的扩展程序) and select the `x-reply-guy` project directory.
+5. Pin the extension to your toolbar.
+6. Click the extension icon → **Options** to configure your API endpoint.
 
 ---
 
-## ✨ 功能
+## ⚙️ Configuration & Recommended Models
 
-- **自动抓取推文**：打开一条推文或回复框，插件自动识别正在看的帖子（支持时间线 / 详情页 / 回复弹窗）
-- **10 种回复风格**：`Value` · `Question` · `Hot take` · `Witty` · `Relate` · `Data` · `Story` · `Pushback` · `Devout` · `Sincere`
-- **流式生成**：SSE 边生成边显示，首字延迟低，支持推理模型（`hy3` / `flash v4` 等）
-- **一键填入**：`Copy` 复制，或 `Fill` 直接写进 X 回复框并自动点亮 `Reply` 按钮
-- **多模型兼容**：OpenAI / DeepSeek / Mimo / 任何 OpenAI 兼容端点（含 `opencode.ai/zen/go/v1` 中转）
-- **自动降级**：端点不支持流式时自动回退非流式调用
-- **右键快捷**：选中任意文字 → 右键 → `Reply to selection with Reply Guy`
+Open the **Options** page (`chrome-extension://<id>/options.html`) to configure:
 
----
+| Field | Description | Example |
+| :--- | :--- | :--- |
+| **API Base** | Any OpenAI-compatible base URL | `https://api.openai.com/v1` or `https://api.deepseek.com/v1` |
+| **API Key** | Your provider API key | `sk-••••••••••••••••` |
+| **Model** | Target model name | `deepseek-chat`, `gpt-4o-mini`, `mimo-v2.5` |
 
-## 🚀 安装（Comet / Chrome / 任何 Chromium 浏览器）
+### Recommended Models by Use Case
 
-1. 克隆或下载本项目
-2. 打开浏览器的扩展页（Comet/Chrome 输入 `chrome://extensions`）
-3. 开启右上角 **开发者模式**
-4. 点 **加载已解压的扩展程序**，选择本项目文件夹
-5. 点击扩展图标 → **Options** 填入你的 API 配置
-
-### 配置说明
-
-| 字段 | 说明 | 示例 |
-|------|------|------|
-| **API Base** | OpenAI 兼容接口地址 | `https://api.openai.com/v1` |
-| **API Key** | 你的密钥 | `sk-...` |
-| **Model** | 模型名 | `gpt-4o-mini` / `deepseek-chat` / `mimo-v2.5` |
-
-> 🔐 **隐私**：API Key 只存在本地浏览器 `chrome.storage.sync`，不会上传到任何服务器。
+| Priority | Recommended Model | Strengths |
+| :--- | :--- | :--- |
+| 🚀 **Fastest Growth / Chinese Posts** | `deepseek-chat` / `mimo-v2.5` | Instant time-to-first-token, natural vernacular tone |
+| 🌎 **Global & English Content** | `gpt-4o-mini` | Strong English nuance, concise formatting |
+| 🧠 **Deep Logical Depth** | `hy3` / `gemini-2.0-flash` / reasoning models | Rich contextual comprehension and storytelling |
 
 ---
 
-## 🧰 兼容模型建议
-
-| 场景 | 推荐模型 | 说明 |
-|------|---------|------|
-| **最快涨粉 / 中文圈** | `mimo-v2.5` / `deepseek-chat` | 非推理，首字快，中文自然 |
-| **英文大号** | `gpt-4o-mini` | 英文语感好 |
-| **质量优先（较慢）** | `hy3` / `flash v4` | 推理模型，思考后出正文，稍慢 |
-
----
-
-## 📂 项目结构
+## 📂 Project Structure
 
 ```
 x-reply-guy/
-├── manifest.json      # MV3 扩展清单
-├── background.js      # LLM 调用（流式 + 降级）、右键菜单、风格库
-├── content.js         # 页面注入：抓推文、注入 Reply Guy 按钮、填入回复框
-├── content.css        # 浮层 / 按钮样式（黑白 editorial 风格）
-├── popup.html         # 弹窗 UI
-├── popup.js           # 弹窗逻辑：抓推文、流式生成、Copy / Fill
-├── options.html       # 设置页 UI
-├── options.js         # 设置页逻辑（保存 API 配置）
-└── icon.png           # 扩展图标
+├── manifest.json          # Chrome Extension Manifest V3
+├── background.js          # Service worker: LLM SSE streaming & context menus
+├── content.js             # DOM extractor & reply composer injector
+├── content.css            # Floating widgets & styling
+├── popup.html             # Main popup interface
+├── popup.js               # Extension popup logic & candidate cards
+├── options.html           # Settings UI
+├── options.js             # Options persistence via chrome.storage
+├── icon.png               # Extension icon
+└── screenshots/           # UI preview screenshots
 ```
 
 ---
 
-## ⚙️ 工作流程
+## 🛡️ Privacy & Safety
 
-```
-打开 X 帖子
-   │
-   ▼
-自动抓取推文文本（content.js / popup.js）
-   │
-   ▼
-选择回复风格（10 种）
-   │
-   ▼
-background.js 流式调用 LLM（SSE，推理模型自动兼容）
-   │
-   ▼
-弹出 3 条候选回复
-   │
-   ├─ Copy ──► 复制到剪贴板
-   └─ Fill ───► execCommand 写入 X 回复框 + 点亮 Reply
-```
-
----
-
-## 🛡️ 隐私与安全
-
-- 代码不含任何硬编码的密钥 / token（已审计）
-- API Key 保存在本地浏览器存储，仅用于请求你的 API 端点
-- 扩展只在 `x.com` / `twitter.com` 页面注入脚本
+- **No Intermediate Servers**: Direct network connections between your browser and your configured LLM API.
+- **Local Storage Only**: Keys remain strictly within your browser profile.
+- **Minimal Permissions**: Scoped only to `x.com` / `twitter.com` tabs and active storage.
 
 ---
 
 ## 📄 License
 
-MIT © [pepedesigner](https://github.com/pepedesigner)
-
-*Made for the Reply Guy grind. 🚀*
-```
+MIT License © [pepedesigner](https://github.com/pepedesigner)
