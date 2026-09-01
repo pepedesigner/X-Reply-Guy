@@ -1,0 +1,23 @@
+{
+  "name": "remotion-guide",
+  "version": "1.0.0",
+  "description": "Step-by-step Remotion animation for X Reply Guy",
+  "scripts": {
+    "dev": "remotion preview src/index.ts",
+    "build:still": "remotion still src/index.ts StepByStepGuide ../screenshots/step-by-step-preview.png",
+    "render:mp4": "remotion render src/index.ts StepByStepGuide ../screenshots/step-by-step-guide.mp4 --codec=h264",
+    "render:gif": "remotion render src/index.ts StepByStepGuide ../screenshots/step-by-step-guide.gif"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.520",
+    "lucide-react": "^1.38.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "remotion": "^4.0.520"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.2.18",
+    "typescript": "^7.0.2"
+  }
+}

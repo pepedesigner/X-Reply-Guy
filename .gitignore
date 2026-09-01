@@ -9,6 +9,10 @@ Thumbs.db
 # Node (if any)
 node_modules/
 *.log
+.remotion/
+remotion-guide/node_modules/
+remotion-guide/.remotion/
+remotion-guide/out/
 
 # Local env / secrets (never commit)
 .env
@@ -18,3 +22,4 @@ node_modules/
 
 # Temp
 *.tmp
+

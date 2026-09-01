@@ -41,7 +41,23 @@
 
 ---
 
-## 📸 Workflow
+## 🎬 Step-by-Step Interactive Guide
+
+<p align="center">
+  <img src="./screenshots/step-by-step-guide.gif" alt="X Reply Guy Step-by-Step Workflow Animation" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+</p>
+
+| Step | Action | Description |
+| :---: | :--- | :--- |
+| **01** | **Locate Post on X** | Browse your timeline or post detail page. Reply Guy automatically detects the focused tweet. |
+| **02** | **Trigger & Auto-Parse** | Click the **⚡ Reply Guy** icon in your toolbar or the inline tweet widget. The tweet context is parsed in milliseconds. |
+| **03** | **Choose Reply Persona** | Pick from 10 battle-tested growth tones (`⚡ Value`, `🔥 Hot take`, `😄 Witty`, `❓ Question`, etc.). |
+| **04** | **Fast SSE Streaming** | Your configured LLM streams 3 curated candidate replies in real-time. |
+| **05** | **1-Click Fill & Publish** | Click **✍️ Fill** to inject the chosen reply straight into X's active draft box — the native `Reply` button lights up instantly with zero typing! |
+
+---
+
+## 📸 Workflow Architecture
 
 ```
 Browse X (Twitter)
@@ -116,7 +132,8 @@ x-reply-guy/
 ├── options.html           # Settings UI
 ├── options.js             # Options persistence via chrome.storage
 ├── icon.png               # Extension icon
-└── screenshots/           # UI preview screenshots
+├── remotion-guide/        # Remotion video generation workspace & components
+└── screenshots/           # UI preview screenshots & animated GIF/MP4 guide
 ```
 
 ---
