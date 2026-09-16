@@ -1,40 +1,54 @@
 // options.js
-const DEFAULTS = {
-  apiBase: "https://api.openai.com/v1",
-  apiKey: "",
-  model: "gpt-4o-mini",
-  systemPrompt:
-    "You are a master 'Reply Guy' on X (Twitter) who grows a following fast. " +
-    "Your goal is to leave high-engagement, high-value replies under other people's posts to attract followers. " +
-    "Great replies have these traits: " +
-    "1) Never open with empty praise like 'Great post!' or 'Nice!'. " +
-    "2) Add real incremental value: a unique angle, a statistic, personal experience, or a counterintuitive insight. " +
-    "3) Most replies end with an open question or hook that invites the author to keep the conversation going. " +
-    "4) Use line breaks and short sentences so it reads well on mobile. " +
-    "5) Be sincere, not sycophantic, and never pedantic or confrontational. " +
-    "6) Keep it tight: usually 1-3 sentences or a very short paragraph. " +
-    "Respond in the SAME language as the tweet you are replying to. " +
-    "Output only the reply text itself, no quotes or explanation."
-};
+const $ = (id) => document.getElementById(id);
 
-async function load() {
-  const c = await chrome.storage.sync.get(DEFAULTS);
-  document.getElementById("apiBase").value = c.apiBase;
-  document.getElementById("apiKey").value = c.apiKey;
-  document.getElementById("model").value = c.model;
-  document.getElementById("systemPrompt").value = c.systemPrompt;
+// 从 API Base 推导需要授权的 match pattern（match pattern 不支持端口）
+function originPattern(apiBase) {
+  try {
+    const u = new URL(apiBase);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return "";
+    return `${u.protocol}//${u.hostname}/*`;
+  } catch {
+    return "";
+  }
 }
 
-document.getElementById("save").onclick = async () => {
-  await chrome.storage.sync.set({
-    apiBase: document.getElementById("apiBase").value.trim(),
-    apiKey: document.getElementById("apiKey").value.trim(),
-    model: document.getElementById("model").value.trim(),
-    systemPrompt: document.getElementById("systemPrompt").value.trim()
-  });
-  const s = document.getElementById("status");
-  s.textContent = "Saved ✓";
-  setTimeout(() => (s.textContent = ""), 2000);
+async function load() {
+  const [sync, local] = await Promise.all([
+    chrome.storage.sync.get(RG.DEFAULTS),
+    chrome.storage.local.get({ apiKey: "" })
+  ]);
+  $("apiBase").value = sync.apiBase;
+  $("apiKey").value = local.apiKey;
+  $("model").value = sync.model;
+  $("systemPrompt").value = sync.systemPrompt;
+}
+
+$("save").onclick = async () => {
+  const apiBase = $("apiBase").value.trim();
+  const origin = originPattern(apiBase);
+  let granted = true;
+  if (origin) {
+    // 必须紧跟用户点击同步发起，否则会被判定为缺少用户手势。
+    try {
+      granted = await chrome.permissions.request({ origins: [origin] });
+    } catch {
+      granted = false;
+    }
+  } else {
+    granted = !apiBase;
+  }
+  await Promise.all([
+    chrome.storage.sync.set({
+      apiBase,
+      model: $("model").value.trim(),
+      systemPrompt: $("systemPrompt").value.trim()
+    }),
+    // 密钥只存本地，绝不进入会随账号同步上传的 storage.sync。
+    chrome.storage.local.set({ apiKey: $("apiKey").value.trim() })
+  ]);
+  const s = $("status");
+  s.textContent = granted ? "Saved ✓" : "Saved — API host access not granted";
+  setTimeout(() => (s.textContent = ""), 2500);
 };
 
 load();

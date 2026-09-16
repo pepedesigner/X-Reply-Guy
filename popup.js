@@ -5,13 +5,6 @@ function escapeHtml(s) {
   return s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 }
 
-function parseReplies(text) {
-  return text
-    .split(/\n\s*\n/)
-    .map((s) => s.replace(/^\d+[\.\)]\s*/, "").trim())
-    .filter(Boolean);
-}
-
 async function getCurrentTweet() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab || !/x\.com|twitter\.com/.test(tab.url)) return null;
@@ -84,11 +77,45 @@ async function render() {
     t.textContent =
       "Couldn't auto-detect a tweet. Paste it manually, or open a tweet / reply box on X and try again.";
     manualWrap.style.display = "block";
+  } else {
+    manualWrap.style.display = "none";
+    t.textContent =
+      (currentTweet.author ? "@" + currentTweet.author + "\n" : "") + currentTweet.text;
+  }
+  await renderPendingSelection();
+}
+
+// 右键菜单的结果被后台写入 chrome.storage.session，这里取出展示并清空。
+async function renderPendingSelection() {
+  let data;
+  try {
+    data = await chrome.storage.session.get({
+      lastReplies: "",
+      lastTweet: "",
+      lastError: ""
+    });
+  } catch {
     return;
   }
-  manualWrap.style.display = "none";
-  t.textContent =
-    (currentTweet.author ? "@" + currentTweet.author + "\n" : "") + currentTweet.text;
+  if (!data.lastReplies && !data.lastError) return;
+  await chrome.storage.session.remove(["lastReplies", "lastTweet", "lastError"]);
+
+  const out = document.getElementById("out");
+  if (data.lastError) {
+    out.innerHTML =
+      '<span class="hint">Selection failed: ' + escapeHtml(data.lastError) + "</span>";
+    return;
+  }
+  if (data.lastTweet) {
+    currentTweet = { text: data.lastTweet, author: "" };
+    document.getElementById("tweet").textContent = data.lastTweet;
+  }
+  out.innerHTML = "";
+  const label = document.createElement("div");
+  label.className = "hint";
+  label.textContent = "From right-click selection:";
+  out.appendChild(label);
+  RG.parseReplies(data.lastReplies).forEach((r) => renderItem(r, out));
 }
 
 document.getElementById("useManual").onclick = () => {
@@ -204,7 +231,7 @@ document.querySelectorAll(".styles button").forEach((b) => {
           return;
         }
         out.innerHTML = "";
-        parseReplies(m.replies).forEach((r) => renderItem(r, out));
+        RG.parseReplies(m.replies).forEach((r) => renderItem(r, out));
         port.disconnect();
       } else if (m.type === "error") {
         let msg = '<span class="hint">Error: ' + escapeHtml(m.error) + "</span>";

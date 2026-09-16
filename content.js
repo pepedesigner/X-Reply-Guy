@@ -174,17 +174,23 @@ function openPanel(composer) {
     b.onclick = async () => {
       const out = document.getElementById("rg-out");
       out.textContent = "Generating…";
-      const res = await chrome.runtime.sendMessage({
-        type: "generate",
-        tweet,
-        style: b.dataset.s
-      });
-      if (!res.ok) {
-        out.textContent = "Error: " + res.error;
+      let res;
+      try {
+        res = await chrome.runtime.sendMessage({
+          type: "generate",
+          tweet,
+          style: b.dataset.s
+        });
+      } catch (e) {
+        out.textContent = "Error: " + (e?.message || "extension context unavailable");
+        return;
+      }
+      if (!res || !res.ok) {
+        out.textContent = "Error: " + ((res && res.error) || "no response from background");
         return;
       }
       out.innerHTML = "";
-      parseReplies(res.replies).forEach((r) => {
+      RG.parseReplies(res.replies).forEach((r) => {
         const item = document.createElement("div");
         item.className = "rg-item";
         item.textContent = r;
@@ -201,21 +207,15 @@ function openPanel(composer) {
   });
 }
 
-// 供 popup 获取当前推文
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === "getTweet") {
-    sendResponse({ tweet: findTargetTweet() });
-  }
+// 监听页面变化，持续注入按钮。X 的 DOM 变动极其频繁，用 rAF 合并到每帧最多一次。
+let _injectQueued = false;
+const obs = new MutationObserver(() => {
+  if (_injectQueued) return;
+  _injectQueued = true;
+  requestAnimationFrame(() => {
+    _injectQueued = false;
+    injectButton();
+  });
 });
-
-function parseReplies(text) {
-  return text
-    .split(/\n\s*\n/)
-    .map((s) => s.replace(/^\d+[\.\)]\s*/, "").trim())
-    .filter(Boolean);
-}
-
-// 监听页面变化，持续注入按钮
-const obs = new MutationObserver(() => injectButton());
 obs.observe(document.body, { childList: true, subtree: true });
 injectButton();

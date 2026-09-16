@@ -21,23 +21,23 @@
 
 - 🎯 **Automatic Tweet Context Extraction**: Instantly parses active tweets across your home timeline, single status views, and floating reply dialogs.
 - 🎭 **10 Battle-Tested Reply Styles**:
-  - `⚡ Value` — Adds insightful takeaways, industry frameworks, or actionable advice.
+  - `💡 Value` — Adds insightful takeaways, industry frameworks, or actionable advice.
   - `❓ Question` — Hooks the author and readers with open-ended conversation starters.
   - `🔥 Hot take` — Sharp, contrarian viewpoints that ignite debate and virality.
-  - `😄 Witty` — Humorous, punchy, and clever banter.
-  - `💡 Relate` — Validates the author's point with personal resonance and empathy.
+  - `😏 Witty` — Humorous, punchy, and clever banter.
+  - `🤝 Relate` — Validates the author's point with personal resonance and empathy.
   - `📊 Data` — Supplies statistical backing, benchmark numbers, or logical proofs.
   - `📖 Story` — Short, impactful real-world anecdotes.
-  - `🥊 Pushback` — Respectful yet firm counter-arguments.
-  - `🙏 Devout` — Highly supportive, community-building enthusiasm.
-  - `🤝 Sincere` — Authentic, grounded, and human encouragement.
+  - `⚡ Pushback` — Respectful yet firm counter-arguments.
+  - `🙏 Devout` — Reverent, faith-filled tone with gratitude and blessing.
+  - `💛 Sincere` — Heartfelt, vulnerable and authentic encouragement.
 - ⚡ **Low-Latency SSE Streaming**: Renders reply candidates in real time with Server-Sent Events (SSE). Full compatibility with both reasoning models (e.g. `hy3`, `flash v4`) and low-latency chat models.
 - ✍️ **1-Click Copy & Direct Fill**:
   - **Copy**: Places the generated response directly on your clipboard.
   - **Fill**: Programmatically injects the chosen reply into X's active draft box and enables the native `Reply` button immediately.
 - 🌐 **Universal LLM Endpoint Compatibility**: Seamlessly works with OpenAI, DeepSeek, Mimo, OpenCode Zen, Ollama, Groq, or any standard OpenAI-compatible API base URL.
-- 🖱️ **Context Menu Shortcut**: Select any text on any page → Right click → *Reply to selection with Reply Guy*.
-- 🔒 **Zero Telemetry & Local Security**: Your API keys are stored strictly inside your browser's local `chrome.storage.sync` and are never transmitted to third parties.
+- 🖱️ **Context Menu Shortcut**: Select any text on any page → Right click → *Reply to selection with Reply Guy*. The generated candidates then appear at the top of the popup.
+- 🔒 **Zero Telemetry & Local Security**: Your API key is stored only in your browser's local `chrome.storage.local` — never account-synced, never sent to any third party, and transmitted only to the API endpoint you configure.
 
 ---
 
@@ -51,7 +51,7 @@
 | :---: | :--- | :--- |
 | **01** | **Locate Post on X** | Browse your timeline or post detail page. Reply Guy automatically detects the focused tweet. |
 | **02** | **Trigger & Auto-Parse** | Click the **⚡ Reply Guy** icon in your toolbar or the inline tweet widget. The tweet context is parsed in milliseconds. |
-| **03** | **Choose Reply Persona** | Pick from 10 battle-tested growth tones (`⚡ Value`, `🔥 Hot take`, `😄 Witty`, `❓ Question`, etc.). |
+| **03** | **Choose Reply Persona** | Pick from 10 battle-tested growth tones (`💡 Value`, `🔥 Hot take`, `😏 Witty`, `❓ Question`, etc.). |
 | **04** | **Fast SSE Streaming** | Your configured LLM streams 3 curated candidate replies in real-time. |
 | **05** | **1-Click Fill & Publish** | Click **✍️ Fill** to inject the chosen reply straight into X's active draft box — the native `Reply` button lights up instantly with zero typing! |
 
@@ -124,6 +124,7 @@ Open the **Options** page (`chrome-extension://<id>/options.html`) to configure:
 ```
 x-reply-guy/
 ├── manifest.json          # Chrome Extension Manifest V3
+├── shared.js              # Shared defaults, reply styles, prompt & parsing helpers
 ├── background.js          # Service worker: LLM SSE streaming & context menus
 ├── content.js             # DOM extractor & reply composer injector
 ├── content.css            # Floating widgets & styling
@@ -131,7 +132,7 @@ x-reply-guy/
 ├── popup.js               # Extension popup logic & candidate cards
 ├── options.html           # Settings UI
 ├── options.js             # Options persistence via chrome.storage
-├── icon.png               # Extension icon
+├── icons/                 # Extension icons (16 / 32 / 48 / 128)
 ├── remotion-guide/        # Remotion video generation workspace & components
 └── screenshots/           # UI preview screenshots & animated GIF/MP4 guide
 ```
@@ -141,8 +142,8 @@ x-reply-guy/
 ## 🛡️ Privacy & Safety
 
 - **No Intermediate Servers**: Direct network connections between your browser and your configured LLM API.
-- **Local Storage Only**: Keys remain strictly within your browser profile.
-- **Minimal Permissions**: Scoped only to `x.com` / `twitter.com` tabs and active storage.
+- **Local Storage Only**: The API key lives in `chrome.storage.local` and is never uploaded through browser account sync.
+- **Minimal Permissions**: Ships with access only to `x.com` / `twitter.com` plus active storage. Access to your LLM API host is requested on demand when you save the Options page, and can be revoked at any time from `chrome://extensions`.
 
 ---
 
